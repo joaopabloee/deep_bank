@@ -50,7 +50,7 @@ Todo o processo foi realizado por meio do workflow:
   
   ![Workflow](https://github.com/ivanovitchm/ppgeecmachinelearning/blob/main/images/workflow.png)
 
-# 4 ETAPAS DO PROCESSO
+# 4 Etapas do processo
 
 ## 4.1 Instalando bibliotecas
 
