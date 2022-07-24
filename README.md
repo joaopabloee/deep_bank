@@ -365,7 +365,58 @@ print(report)
 ConfusionMatrixDisplay.from_predictions(test_y, pred_y)
 plt.show()
 ~~~
- 
+
+### 4.3.6 Teste Modelo com downsample e tuning of parameters
+
+#### 4.3.6.1 Balanceamento dos dados com downsample
+
+~~~
+label0 = df[df['y'] == 0]
+label1 = df[df['y'] == 1]
+from sklearn.utils import resample
+df_downsampled = resample(label0,
+                          replace=False,
+                          n_samples=5289,
+                          random_state=42)
+df_resample = pd.concat([label1, df_downsampled])
+~~~
+
+#### 4.3.6.2 Pré-processamento dos dados
+
+~~~
+X = df_resample.drop(['y'], axis=1)
+y = df_resample['y']
+X_scaled = MinMaxScaler().fit_transform(X)
+train_x, test_x, train_y, test_y = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+~~~
+
+#### 4.3.6.3 Modelo
+
+~~~
+from sklearn.model_selection import GridSearchCV
+
+clf = MLPClassifier(hidden_layer_sizes=(20,50), activation='relu', solver='adam', alpha=0.1, max_iter=1000, random_state=42)
+
+# Every combination you want to try
+params = {
+    'hidden_layer_sizes' : [(20,50), (50, 60), (20, 30, 40)], 
+    'activation' : ['relu', 'tanh'], 
+    'alpha' : [0.1, 0.01]
+}
+
+gscv = GridSearchCV(clf, params, verbose=1)
+
+gscv.fit(np.array(train_x), np.array(train_y))
+print(gscv.best_params_) 
+
+pred_y = gscv.predict(test_x)
+
+report = metrics.classification_report(test_y, pred_y, target_names=['0','1'])
+print(report)
+
+ConfusionMatrixDisplay.from_predictions(test_y, pred_y)
+plt.show()
+~~~
  
 </p>
   
