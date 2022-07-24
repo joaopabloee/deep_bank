@@ -365,8 +365,7 @@ print(report)
 ConfusionMatrixDisplay.from_predictions(test_y, pred_y)
 plt.show()
 ~~~
-  
-### 4.3.6 Teste Modelo com downsample e tuning of parameters
-  
+ 
+ 
 </p>
   
